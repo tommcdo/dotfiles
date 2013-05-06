@@ -22,18 +22,11 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-# case "$TERM" in
-# xterm-color)
-#     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]($?)\$ '
-#     ;;
-# *)
-#     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#     ;;
-# esac
+# Git prompt shim
+DOTFILEDIR="$(cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
+source "$DOTFILEDIR/lib/git-prompt.sh"
 
-# Comment in the above and uncomment this below for a color prompt
-PS1='${debian_chroot:+($debian_chroot)}\[\033[0;31m\]\u\[\033[00m\]@\[\033[0;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\](\[\033[0;36m\]$?\[\033[00m\])\$ '
+PS1='\[\033[1;30m\]\t\[\033[0;30m\]|\[\033[00m\]${debian_chroot:+($debian_chroot)}\[\033[0;31m\]\u\[\033[00m\]@\[\033[0;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\](\[\033[0;36m\]$?\[\033[00m\])$(__git_ps1 "\[\033[1;36m\]{\[\033[0;33m\]%s\[\033[1;36m\]}\[\033[00m\]")\$ '
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -43,6 +36,9 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+if [ ! -z "$PROMPT_COMMAND" ]; then
+    PROMPT_COMMAND=$PROMPT_COMMAND';'
+fi
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -58,23 +54,7 @@ if [ "$TERM" != "dumb" ]; then
     eval "`dircolors -b`"
     alias ls='ls -F --color=always'
     alias grep='grep --color=always'
-    #alias dir='ls --color=auto --format=vertical'
-    #alias vdir='ls --color=auto --format=long'
 fi
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-alias nano='nano -w'
-alias vi='vim'
-alias pico='pico -w'
-alias space='df -h | grep ^/'
-alias svn-status='svn status | grep -v "\.swp$"'
-
-# modify classpath for jdbc
-CLASSPATH=.:/usr/share/java/mysql.jar
-export CLASSPATH
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -82,8 +62,3 @@ export CLASSPATH
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
-
-# Some stuff necessary for gtv.tommcdo.com
-export AWS_AUTO_SCALING_HOME=/home/goingthruvinyl/trunk/scripts/AutoScaling
-export JAVA_HOME=/usr
-export PATH=$PATH:~/bin:$AWS_AUTO_SCALING_HOME/bin
