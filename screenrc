@@ -1,7 +1,10 @@
 startup_message off
-hardstatus on
-termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
-hardstatus alwayslastline
-hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m/%d %c "
 msgwait 1
 vbell off
+caption always
+caption string "%{.kK}%-w%{..y}%n %t%{-}%+w %=%{..b}%H %{..g}%m/%d %{..y}%c "
+term screen-256color-bce
+termcapinfo xterm 'Co#256'
+termcapinfo xterm 'AF=\E[3%?%p1%{7}%>%t8;5;%;%p1%dm'
+termcapinfo xterm 'AB=\E[48;5;%dm'
+termcapinfo xterm 'so=\E[3m:se=\E[23m'
