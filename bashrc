@@ -54,6 +54,7 @@ if [ "$TERM" != "dumb" ]; then
     eval "`dircolors -b`"
     alias ls='ls -F --color=always'
     alias grep='grep --color=always'
+    alias tmux='tmux -2'
 fi
 
 # enable programmable completion features (you don't need to enable
