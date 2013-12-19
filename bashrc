@@ -52,8 +52,8 @@ fi
 # enable color support of ls and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
     eval "`dircolors -b`"
-    alias ls='ls -F --color=always'
-    alias grep='grep --color=always'
+    alias ls='ls -F --color=auto'
+    alias grep='grep --color=auto'
     alias tmux='tmux -2'
 fi
 
