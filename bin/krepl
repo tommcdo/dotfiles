@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+namespace=$1
+
+while true; do
+	read -p "[$namespace] kubectl> " command
+
+	if [ -z "$command" ]; then
+		continue
+	fi
+
+	if [ "$command" = "exit" ]; then
+		break
+	fi
+
+	if [ "${command:0:1}" = "!" ]; then
+		eval "${command:1}"
+	else
+		eval kubectl "$command" -n "$namespace"
+	fi
+
+	echo
+done
